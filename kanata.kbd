@@ -1,0 +1,112 @@
+(defsrc
+  grv	  1    2    3    4    5       6    7    8    9    0       -    =    bspc
+  tab     q    w    e    r    t       y    u    i    o    p       [    ]    \ 
+  caps    a    s    d    f    g       h    j    k    l    ;       '        ret 
+  lsft    z    x    c    v    b       n    m    ,    .    /       rsft
+  lctl  lmet 	lalt           spc         ralt  rmet rctl
+ ) 
+
+;; (defsrc
+;; grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+;; tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+;; caps a    s    d    f    g    h    j    k    l    ;    '    ret
+;; lsft z    x    c    v    b    n    m    ,    .    /    rsft
+;; lctl lmet lalt           spc            ralt rmet rctl
+;; )
+
+(defvar
+  ;; Note: consider using different time values for your different fingers.
+  ;; For example, your pinkies might be slower to release keys and index
+  ;; fingers faster.
+  tap-time 200  
+  hold-time 200
+  hold-time-slow 300 
+)
+
+(defalias
+  meh  (multi ctl alt sft)
+  tmeh (tap-hold $tap-time $hold-time spc @meh)
+   l_cmd (layer-toggle cmd)
+   l_sys1 (layer-toggle sys1)
+   l_sys2 (layer-toggle sys2)
+   l_num (layer-toggle num)
+   s (tap-hold $tap-time $hold-time s @l_cmd)
+   h (tap-hold $tap-time $hold-time h @l_cmd)
+   t (tap-hold $tap-time $hold-time t @l_sys1)
+   a (tap-hold $tap-time $hold-time-slow a @l_sys1)
+   r (tap-hold $tap-time $hold-time r @l_sys2)
+   e (tap-hold $tap-time $hold-time e @l_sys2)
+   n (tap-hold $tap-time $hold-time-slow n @l_num)
+   i (tap-hold $tap-time $hold-time-slow i @l_num)
+   l (tap-hold $tap-time $hold-time-slow l lctl)
+   d (tap-hold $tap-time $hold-time d lalt)
+   w (tap-hold $tap-time $hold-time w lmet)
+   u (tap-hold $tap-time $hold-time-slow u lctl)
+   o (tap-hold $tap-time $hold-time o lalt)
+   f (tap-hold $tap-time $hold-time f rmet)
+
+   d_h (tap-hold $tap-time $hold-time del home)
+   p_e (tap-hold $tap-time $hold-time M-[ end)
+
+   c_uz_r (chord underscore r)
+   c_uz_t (chord underscore t)
+   c_uz_s (chord underscore s)
+   c_apos_h (chord apos h)
+   c_apos_a (chord apos a)
+)
+
+(defchords underscore 15
+  (r    ) @r
+  (  t  ) @t
+  (    s) @s
+  (r t  ) - 
+  (  t s) z 
+)
+
+(defchords apos 15
+  (h  ) @h
+  (  a) @a
+  (h a) ' 
+)
+
+
+(deflayer graphite 
+  XX     1   2     3     4      5    6    7     8    9    0    XX    XX    bspc
+  tab     b    @l     @d        @w       v    k    @f    @o    @u    j    XX    XX    XX
+  esc    @n   @c_uz_r @c_uz_t  @c_uz_s   g    y    @c_apos_h   @c_apos_a    @e    @i    XX  ret  
+  lsft     q    x      m         c      XX   lsft    p    .    ,    /   XX
+  XX   lmet XX     spc     XX     XX  XX
+  
+)
+
+(deflayer cmd 
+  XX   XX   XX     XX        XX     XX     XX    XX     XX    XX      XX     XX    XX    XX
+  XX   tab   esc    C-S-tab   C-tab  XX    XX    C-c    up    bspc    C-v    XX    XX    XX
+  XX   M-tab   @d_h   @p_e      M-]    XX    XX    left   down  right   ret    XX    XX
+  lsft XX     XX        XX      C-S-v    XX     C-S-c    XX    XX   XX     S-/    XX
+  XX   XX   XX spc XX   XX   XX
+)
+
+(deflayer sys1
+  XX         XX    XX    XX    XX    XX      XX    XX    XX    XX    XX     XX    XX    XX
+  XX         S-1   S-2   S-3   S-4   S-5     S-6   S-7   S-8   S-9   S-0    XX    XX    XX
+  XX         `     XX    -     \     S-=     XX    S-;   ;     [     ]      XX    XX
+  lsft   XX    XX    XX    XX    XX      lsft    +     =     S-[   S-]    XX
+  XX   XX XX  spc XX XX XX   
+)
+				
+(deflayer sys2 
+  XX        XX   XX    XX     XX     XX       XX    XX    XX    XX     XX    XX    XX    XX
+  XX        XX  M-1    M-2    M-3    XX       XX    M-4   M-5    M-6     XX    XX    XX    XX
+  XX        XX   XX    M--    M-+    XX     XX    M-ret   M-r     XX    XX   XX     XX
+  lsft	   XX   XX    M-S-c   XX    XX     lsft     XX    XX      XX     XX    XX
+  XX   XX  XX spc XX XX XX
+)
+
+(deflayer num 
+  XX         XX    XX   XX     XX     XX       XX    XX    XX    XX    XX    XX    XX    XX
+  XX         XX    XX   XX     XX     XX       XX    7     8     9     0     XX    XX    XX
+  XX         XX    XX   XX     XX     XX       XX    4     5     6     .     XX    XX     
+  lsft   	     XX    XX   XX     XX     XX     lsft    1     2     3     XX    XX
+  XX   XX   XX spc XX XX  XX 
+)
